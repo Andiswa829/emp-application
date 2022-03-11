@@ -36,7 +36,7 @@ const styles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
     },
     paper: {
-      height: "450px",
+      height: "600px",
       width: "100%",
     },
     label: {
@@ -51,6 +51,9 @@ const styles = makeStyles((theme: Theme) =>
     },
     selectInput: {
       justifyContent: "flex-start",
+    },
+    helperText: {
+      color: "red",
     },
   })
 );

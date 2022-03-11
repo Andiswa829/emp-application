@@ -3,6 +3,7 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
   MenuItem,
   OutlinedInput,
   TextField,
@@ -36,6 +37,7 @@ const EmployeeDetail = (props: EmployeeProps) => {
   const [employeeNumber, setEmployeeNumber] = useState<number>();
   const [profileColour, setProfileColour] = useState<string>("");
   const [buttonColour, setButtonColour] = useState<string>("");
+  const [isSave, setIsSave] = useState<boolean>(false);
 
   useEffect(() => {
     agent.Employees.get(props.empId!).then((response) => {
@@ -102,24 +104,29 @@ const EmployeeDetail = (props: EmployeeProps) => {
   };
 
   const handleSaveChange = () => {
-    const payLoad: EmployeeModel = {
-      employeeNumber: employeeNumber,
-      profileColour: profileColour,
-      salutations: salutation,
-      gender: gender,
-      grossSalary: grossSalary,
-      firstName: firstName,
-      lastName: lastName,
-    };
+    setIsSave(true);
+    if (!firstName || !lastName || !gender || !salutation || !employeeNumber) {
+      toast.error("Please select or enter the required field(s)");
+    } else {
+      const payLoad: EmployeeModel = {
+        employeeNumber: employeeNumber,
+        profileColour: profileColour,
+        salutations: salutation,
+        gender: gender,
+        grossSalary: grossSalary,
+        firstName: firstName,
+        lastName: lastName,
+      };
 
-    toast.promise(updateEmployee(props.empId!, payLoad), {
-      pending: "Updating employee",
-      success: "Employee updated successfully",
-      error: " Updating employee failed",
-    });
+      toast.promise(updateEmployee(props.empId!, payLoad), {
+        pending: "Updating employee",
+        success: "Employee updated successfully",
+        error: " Updating employee failed",
+      });
 
-    props.closeModal();
-    props.loadItem();
+      props.closeModal();
+      props.loadItem();
+    }
   };
 
   const updateEmployee = (empId: number, employee: EmployeeModel) =>
@@ -224,6 +231,11 @@ const EmployeeDetail = (props: EmployeeProps) => {
                   disabled
                   InputProps={{ className: classes.input }}
                 />
+                {!firstName && isSave && (
+                  <FormHelperText className={classes.helperText}>
+                    This field is required
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <Grid container xs={12} spacing={2} className={classes.margins}>
@@ -244,6 +256,11 @@ const EmployeeDetail = (props: EmployeeProps) => {
                   onChange={handleLastNameChange}
                   InputProps={{ className: classes.input }}
                 />
+                {!lastName && isSave && (
+                  <FormHelperText className={classes.helperText}>
+                    This field is required
+                  </FormHelperText>
+                )}
               </Grid>
               <GridControlInputLabel
                 label="Gross Salary $PY"
@@ -290,6 +307,11 @@ const EmployeeDetail = (props: EmployeeProps) => {
                       </MenuItem>
                     ))}
                   </CustomSelect>
+                  {!salutation && isSave && (
+                    <FormHelperText className={classes.helperText}>
+                      This field is required
+                    </FormHelperText>
+                  )}
                 </Grid>
               </Grid>
               <GridControlInputLabel
@@ -362,6 +384,11 @@ const EmployeeDetail = (props: EmployeeProps) => {
                     ))}
                   </FormGroup>
                 </FormControl>
+                {!gender && isSave && (
+                  <FormHelperText className={classes.helperText}>
+                    This field is required
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <Grid container xs={12} spacing={2} className={classes.margins}>
@@ -382,6 +409,11 @@ const EmployeeDetail = (props: EmployeeProps) => {
                   type="number"
                   InputProps={{ className: classes.input }}
                 />
+                {!employeeNumber && isSave && (
+                  <FormHelperText className={classes.helperText}>
+                    This field is required
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
           </Grid>

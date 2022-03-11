@@ -52,6 +52,9 @@ const styles = makeStyles((theme: Theme) =>
     selectInput: {
       justifyContent: "flex-start",
     },
+    helperText: {
+      color: "red",
+    },
   })
 );
 
